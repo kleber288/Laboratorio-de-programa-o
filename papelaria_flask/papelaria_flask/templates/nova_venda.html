@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titulo %}Nova venda · Papelaria Criativa{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><h1>Nova venda</h1><p>Monte o carrinho e finalize o atendimento.</p></div></div>
+<section class="painel"><form method="post" action="{{ url_for('venda.adicionar') }}" class="adicionar-item">
+    <label>Produto<select name="produto_id" required><option value="">Selecione...</option>{% for p in produtos if p.estoque > 0 %}<option value="{{ p.id }}">{{ p.nome }} · {{ p.preco_centavos|moeda }} · {{ p.estoque }} em estoque</option>{% endfor %}</select></label>
+    <label>Quantidade<input type="number" name="quantidade" min="1" value="1" required></label><button class="botao primario">Adicionar</button>
+</form></section>
+<div class="tabela-wrapper"><table><thead><tr><th>Produto</th><th>Preço</th><th>Quantidade</th><th>Subtotal</th><th></th></tr></thead><tbody>
+{% for item in carrinho %}<tr><td>{{ item.nome }}</td><td>{{ item.preco_centavos|moeda }}</td><td>{{ item.quantidade }}</td><td>{{ (item.preco_centavos * item.quantidade)|moeda }}</td><td><form method="post" action="{{ url_for('venda.remover', indice=loop.index0) }}"><button class="perigo link-button">Remover</button></form></td></tr>
+{% else %}<tr><td colspan="5" class="vazio">O carrinho está vazio.</td></tr>{% endfor %}</tbody></table></div>
+<form method="post" action="{{ url_for('venda.finalizar') }}" class="resumo"><label class="cliente">Cliente<input name="cliente" required minlength="2" placeholder="Nome do cliente"></label><span>Total</span><strong>{{ total|moeda }}</strong><div class="acoes-finais"><button class="botao primario" {{ 'disabled' if not carrinho }}>Finalizar venda</button></div></form>
+<form method="post" action="{{ url_for('venda.limpar') }}" class="limpar-form"><button class="botao secundario" {{ 'disabled' if not carrinho }}>Limpar carrinho</button></form>
+{% endblock %}

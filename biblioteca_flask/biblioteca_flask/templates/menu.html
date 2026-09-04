@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block titulo %}Painel · Biblioteca Viva{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><h1>Olá, {{ session.usuario_nome }}</h1><p>Visão geral da biblioteca.</p></div></div>
+<section class="cards">
+    <article class="card"><span>Títulos no acervo</span><strong>{{ total_titulos }}</strong><a href="{{ url_for('livro.listar') }}">Gerenciar livros →</a></article>
+    <article class="card"><span>Exemplares disponíveis</span><strong>{{ total_disponiveis }}</strong><a href="{{ url_for('livro.listar') }}">Consultar acervo →</a></article>
+    <article class="card destaque"><span>Empréstimos em aberto</span><strong>{{ emprestimos_abertos }}</strong><a href="{{ url_for('emprestimo.novo') }}">Registrar empréstimo →</a></article>
+</section>
+{% endblock %}

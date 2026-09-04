@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titulo %}Novo empréstimo · Biblioteca Viva{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><h1>Novo empréstimo</h1><p>Selecione os livros e informe o leitor.</p></div></div>
+<section class="painel"><form method="post" action="{{ url_for('emprestimo.adicionar') }}" class="adicionar-item">
+    <label>Livro<select name="livro_id" required><option value="">Selecione...</option>{% for l in livros if l.exemplares_disponiveis > 0 %}<option value="{{ l.id }}">{{ l.titulo }} · {{ l.autor }} · {{ l.exemplares_disponiveis }} disponível(is)</option>{% endfor %}</select></label>
+    <label>Quantidade<input type="number" name="quantidade" min="1" value="1" required></label><button class="botao primario">Adicionar</button>
+</form></section>
+<div class="tabela-wrapper"><table><thead><tr><th>Livro</th><th>Autor</th><th>Quantidade</th><th></th></tr></thead><tbody>
+{% for item in carrinho %}<tr><td>{{ item.titulo }}</td><td>{{ item.autor }}</td><td>{{ item.quantidade }}</td><td><form method="post" action="{{ url_for('emprestimo.remover', indice=loop.index0) }}"><button class="perigo link-button">Remover</button></form></td></tr>
+{% else %}<tr><td colspan="4" class="vazio">Nenhum livro selecionado.</td></tr>{% endfor %}</tbody></table></div>
+<form method="post" action="{{ url_for('emprestimo.finalizar') }}" class="resumo emprestimo-form"><label>Leitor<input name="leitor" required minlength="2" placeholder="Nome do leitor"></label><label>Devolução prevista<input type="date" name="data_prevista" min="{{ hoje }}" required></label><button class="botao primario" {{ 'disabled' if not carrinho }}>Registrar empréstimo</button></form>
+<form method="post" action="{{ url_for('emprestimo.limpar') }}" class="limpar-form"><button class="botao secundario" {{ 'disabled' if not carrinho }}>Limpar seleção</button></form>
+{% endblock %}

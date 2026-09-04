@@ -1,0 +1,64 @@
+{#
+    View das respostas GET/POST de ``auth.login``. ``extends`` reutiliza cabeçalho,
+    flashes e rodapé; os blocks abaixo substituem regiões declaradas em base.html.
+    Sem ``action``, o formulário POST volta à própria URL /login. Cada ``name`` é
+    a chave lida por request.form no Controller. ``required`` ajuda no navegador,
+    mas a autenticação e validação reais continuam no servidor.
+#}
+{% extends "base.html" %}
+
+{% block titulo %}
+    Entrar · Mercado Fácil
+{% endblock %}
+
+{% block conteudo %}
+    <section class="auth-card">
+        <h1>Bem-vindo</h1>
+
+        <p>Entre para gerenciar produtos e compras.</p>
+
+        {# Labels envolvendo inputs criam associação acessível sem depender de ``for``/``id``. #}
+        <form method="post" class="formulario">
+            <label>
+                Usuário
+
+                <input
+                    name="usuario"
+                    required
+                    autofocus
+                    {# autocomplete orienta o gerenciador de credenciais do navegador. #}
+                    autocomplete="username"
+                >
+            </label>
+
+            <label>
+                Senha
+
+                <input
+                    type="password"
+                    name="senha"
+                    required
+                    {# type=password mascara visualmente; o hash é verificado no servidor. #}
+                    autocomplete="current-password"
+                >
+            </label>
+
+            <button class="botao primario" type="submit">
+                Entrar
+            </button>
+        </form>
+
+        <p class="ajuda">
+            Primeiro acesso:
+            <strong>admin</strong> /
+            <strong>admin123</strong>
+        </p>
+
+        <p>
+            {# url_for resolve o endpoint do Blueprint em vez de fixar a URL. #}
+            <a href="{{ url_for('auth.cadastro') }}">
+                Criar uma conta
+            </a>
+        </p>
+    </section>
+{% endblock %}

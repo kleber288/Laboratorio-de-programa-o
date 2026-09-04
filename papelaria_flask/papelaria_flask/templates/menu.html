@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block titulo %}Painel · Papelaria Criativa{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><h1>Olá, {{ session.usuario_nome }}</h1><p>Visão geral da papelaria.</p></div></div>
+<section class="cards">
+    <article class="card"><span>Produtos cadastrados</span><strong>{{ total_produtos }}</strong><a href="{{ url_for('produto.listar') }}">Gerenciar produtos →</a></article>
+    <article class="card"><span>Unidades em estoque</span><strong>{{ total_estoque }}</strong><a href="{{ url_for('produto.listar') }}">Conferir estoque →</a></article>
+    <article class="card destaque"><span>Vendas concluídas</span><strong>{{ total_vendas }}</strong><a href="{{ url_for('venda.nova') }}">Abrir nova venda →</a></article>
+</section>
+{% endblock %}

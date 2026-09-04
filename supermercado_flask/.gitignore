@@ -1,0 +1,13 @@
+# Ambientes virtuais locais: dependências instaladas não pertencem ao projeto.
+venv/
+.venv/
+# Artefatos/caches gerados automaticamente por Python e pytest.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+# Segredos locais e dados/relatórios gerados durante o uso.
+.env
+instance/*.db
+exports/*.xlsx
+# Mantém os marcadores que permitem versionar diretórios inicialmente vazios.
+!.gitkeep

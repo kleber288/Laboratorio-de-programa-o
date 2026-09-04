@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Editar' if livro else 'Novo' }} livro{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><h1>{{ 'Editar' if livro else 'Novo' }} livro</h1><p>Os campos com * são obrigatórios.</p></div></div>
+<form method="post" class="painel formulario grade-form">
+    <label>Título *<input name="titulo" required value="{{ livro.titulo if livro else request.form.get('titulo', '') }}"></label>
+    <label>Autor *<input name="autor" required value="{{ livro.autor if livro else request.form.get('autor', '') }}"></label>
+    <label>ISBN *<input name="isbn" required value="{{ livro.isbn if livro else request.form.get('isbn', '') }}"></label>
+    <label>Categoria *{% set atual = livro.categoria if livro else request.form.get('categoria', '') %}<select name="categoria" required>{% for c in ['Romance', 'Conto', 'Poesia', 'História', 'Ciências', 'Tecnologia', 'Didático', 'Infantil', 'Outros'] %}<option value="{{ c }}" {{ 'selected' if atual == c }}>{{ c }}</option>{% endfor %}</select></label>
+    <label>Ano de publicação *<input type="number" name="ano_publicacao" min="1" max="9999" required value="{{ livro.ano_publicacao if livro else request.form.get('ano_publicacao', '') }}"></label>
+    <label>Total de exemplares *<input type="number" name="exemplares_total" min="0" required value="{{ livro.exemplares_total if livro else request.form.get('exemplares_total', 1) }}"></label>
+    <div class="form-acoes"><a class="botao secundario" href="{{ url_for('livro.listar') }}">Cancelar</a><button class="botao primario">Salvar livro</button></div>
+</form>
+{% endblock %}

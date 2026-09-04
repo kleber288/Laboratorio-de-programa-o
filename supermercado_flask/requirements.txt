@@ -1,0 +1,6 @@
+# Framework web usado pela Application Factory, Blueprints, sessão e templates.
+Flask==3.1.1
+# Biblioteca que cria e lê os arquivos XLSX das exportações e testes.
+openpyxl==3.1.5
+# Executor das fixtures e testes de integração.
+pytest==8.4.1

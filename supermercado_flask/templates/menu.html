@@ -1,0 +1,15 @@
+{#
+    Painel servido por ``main.inicio``. Herda base.html e preenche seus blocks.
+    ``session.usuario_nome`` lê a sessão criada no login; totais vêm dos COUNTs
+    dos Models. As chaves passadas a url_for apontam para endpoints de Blueprints.
+#}
+{% extends "base.html" %}
+{% block titulo %}Painel{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><h1>Olá, {{ session.usuario_nome }}</h1><p>Visão geral do supermercado.</p></div></div>
+<section class="cards">
+  <article class="card"><span>Produtos cadastrados</span><strong>{{ total_produtos }}</strong><a href="{{ url_for('produto.listar') }}">Gerenciar produtos →</a></article>
+  <article class="card"><span>Compras concluídas</span><strong>{{ total_compras }}</strong><a href="{{ url_for('compra.listar') }}">Ver histórico →</a></article>
+  <article class="card destaque"><span>Atendimento</span><strong>Nova compra</strong><a href="{{ url_for('compra.nova') }}">Abrir carrinho →</a></article>
+</section>
+{% endblock %}

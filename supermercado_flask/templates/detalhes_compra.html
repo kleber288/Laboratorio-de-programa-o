@@ -1,0 +1,15 @@
+{#
+    Comprovante de ``compra.detalhes``. ``compra`` é o cabeçalho e ``itens`` é a
+    coleção detalhada; o filtro moeda formata inteiros em centavos. O for cria uma
+    linha por item. ``nao-imprimir`` conversa com @media print do CSS; o botão usa
+    a API nativa window.print sem enviar formulário ou alterar o servidor.
+#}
+{% extends "base.html" %}
+{% block titulo %}Compra #{{ compra.id }}{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina nao-imprimir"><div><h1>Compra #{{ compra.id }}</h1><p>{{ compra.criada_em }} · {{ compra.usuario_nome }}</p></div><button class="botao secundario" onclick="window.print()">Imprimir</button></div>
+<section class="comprovante"><div class="comprovante-topo"><h2>Mercado Fácil</h2><p>Comprovante da compra #{{ compra.id }}</p><p>{{ compra.criada_em }} · Atendente: {{ compra.usuario_nome }}</p></div>
+<div class="tabela-wrapper"><table><thead><tr><th>Item</th><th>Preço unitário</th><th>Qtd.</th><th>Subtotal</th></tr></thead><tbody>{% for i in itens %}<tr><td>{{ i.produto_nome }}</td><td>{{ i.preco_unitario_centavos|moeda }}</td><td>{{ i.quantidade }}</td><td>{{ i.subtotal_centavos|moeda }}</td></tr>{% endfor %}</tbody></table></div>
+<div class="total-comprovante">Total: {{ compra.total_centavos|moeda }}</div></section>
+<p class="nao-imprimir"><a href="{{ url_for('compra.listar') }}">← Voltar ao histórico</a></p>
+{% endblock %}

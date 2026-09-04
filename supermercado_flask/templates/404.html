@@ -1,0 +1,10 @@
+{#
+    View do errorhandler 404 de app.py. Mesmo em uma página de erro, ``extends``
+    mantém identidade visual; os blocks definem título e conteúdo. ``url_for``
+    oferece um caminho válido de volta sem codificar a URL manualmente.
+#}
+{% extends "base.html" %}{% block titulo %}Página não encontrada{% endblock %}{% block conteudo %}<section
+    class="auth-card">
+    <h1>404</h1>
+    <p>A página solicitada não existe.</p><a href="{{ url_for('main.inicio') }}">Voltar ao início</a>
+</section>{% endblock %}

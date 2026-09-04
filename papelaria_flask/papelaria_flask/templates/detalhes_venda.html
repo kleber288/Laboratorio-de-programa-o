@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block titulo %}Venda #{{ venda.id }}{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina nao-imprimir"><div><h1>Venda #{{ venda.id }}</h1><p>{{ venda.criada_em }} · {{ venda.usuario_nome }}</p></div><button class="botao secundario" onclick="window.print()">Imprimir</button></div>
+<section class="comprovante"><div class="comprovante-topo"><h2>Papelaria Criativa</h2><p>Comprovante da venda #{{ venda.id }}</p><p>Cliente: {{ venda.cliente }} · Atendente: {{ venda.usuario_nome }}</p></div>
+<div class="tabela-wrapper"><table><thead><tr><th>Item</th><th>Preço unitário</th><th>Qtd.</th><th>Subtotal</th></tr></thead><tbody>{% for i in itens %}<tr><td>{{ i.produto_nome }}</td><td>{{ i.preco_unitario_centavos|moeda }}</td><td>{{ i.quantidade }}</td><td>{{ i.subtotal_centavos|moeda }}</td></tr>{% endfor %}</tbody></table></div>
+<div class="total-comprovante">Total: {{ venda.total_centavos|moeda }}</div></section>
+<p class="nao-imprimir"><a href="{{ url_for('venda.listar') }}">← Voltar ao histórico</a></p>
+{% endblock %}

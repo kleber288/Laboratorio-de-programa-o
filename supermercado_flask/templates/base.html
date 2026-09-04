@@ -1,0 +1,92 @@
+{#
+    Template-base compartilhado por todas as páginas. Os filhos usam ``extends``
+    para herdar esta estrutura e substituem os blocks ``titulo`` e ``conteudo``.
+    Comentários Jinja como este são removidos no servidor e não chegam ao HTML.
+#}
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    {# UTF-8 preserva acentos; viewport permite que as media queries funcionem em celulares. #}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        {# Um block é um ponto de extensão; há texto padrão se o filho não o preencher. #}
+        {% block titulo %}
+            Supermercado Online
+        {% endblock %}
+    </title>
+
+    {# url_for gera a URL correta do endpoint especial ``static``. #}
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+    <header class="topo">
+        {# A expressão escolhe o destino da marca conforme a presença da identidade na sessão. #}
+        <a
+            class="marca"
+            href="{{ url_for('main.inicio') if session.get('usuario_id') else url_for('auth.login') }}"
+        >
+            Mercado Fácil
+        </a>
+
+        {# O menu privado só é emitido quando a sessão possui ``usuario_id``. #}
+        {% if session.get('usuario_id') %}
+            {# aria-label dá nome semântico à navegação para tecnologias assistivas. #}
+            <nav aria-label="Navegação principal">
+                <a href="{{ url_for('main.inicio') }}">
+                    Início
+                </a>
+
+                <a href="{{ url_for('produto.listar') }}">
+                    Produtos
+                </a>
+
+                <a href="{{ url_for('compra.nova') }}">
+                    Nova compra
+                </a>
+
+                <a href="{{ url_for('compra.listar') }}">
+                    Histórico
+                </a>
+
+                {# Logout usa POST para não permitir mudança de estado por um link GET. #}
+                <form
+                    method="post"
+                    action="{{ url_for('auth.logout') }}"
+                >
+                    <button class="link-button" type="submit">
+                        Sair
+                    </button>
+                </form>
+            </nav>
+        {% endif %}
+    </header>
+
+    <main class="container">
+        {# ``with`` guarda as mensagens flash; ``for`` percorre categoria e texto.
+           A categoria também vira classe CSS, e role=alert anuncia feedback aos leitores de tela. #}
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
+            {% for categoria, mensagem in mensagens %}
+                <div class="alerta {{ categoria }}" role="alert">
+                    {{ mensagem }}
+                </div>
+            {% endfor %}
+        {% endwith %}
+
+        {# Cada View filha insere aqui o conteúdo principal específico da rota. #}
+        {% block conteudo %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        Projeto didático · Flask, Jinja2, SQLite e MVC
+    </footer>
+</body>
+
+</html>

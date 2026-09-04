@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block titulo %}Criar conta · Biblioteca Viva{% endblock %}
+{% block conteudo %}
+<section class="auth-card"><h1>Criar conta</h1><p>Cadastre um responsável pela biblioteca.</p>
+<form method="post" class="formulario"><label>Nome completo<input name="nome" required minlength="2" value="{{ request.form.get('nome', '') }}"></label><label>Usuário<input name="usuario" required minlength="3" value="{{ request.form.get('usuario', '') }}"></label><label>Senha<input type="password" name="senha" required minlength="6"></label><button class="botao primario">Cadastrar</button></form><p><a href="{{ url_for('auth.login') }}">Voltar ao login</a></p></section>
+{% endblock %}

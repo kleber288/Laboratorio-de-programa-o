@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block titulo %}Empréstimo #{{ emprestimo.id }}{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><h1>Empréstimo #{{ emprestimo.id }}</h1><p>Leitor: {{ emprestimo.leitor }} · Responsável: {{ emprestimo.usuario_nome }}</p></div>{% if emprestimo.status == 'EM_ABERTO' %}<form method="post" action="{{ url_for('emprestimo.devolver', emprestimo_id=emprestimo.id) }}" onsubmit="return confirm('Confirmar a devolução de todos os livros?')"><button class="botao primario">Registrar devolução</button></form>{% endif %}</div>
+<section class="comprovante"><div class="comprovante-topo"><h2>Biblioteca Viva</h2><p>Retirada: {{ emprestimo.criado_em }}</p><p>Devolução prevista: <strong class="{{ 'atrasado' if emprestimo.status == 'EM_ABERTO' and emprestimo.data_prevista < hoje }}">{{ emprestimo.data_prevista }}</strong></p><p>Status: <span class="status {{ emprestimo.status|lower }}">{{ 'Em aberto' if emprestimo.status == 'EM_ABERTO' else 'Devolvido' }}</span></p>{% if emprestimo.devolvido_em %}<p>Devolvido em: {{ emprestimo.devolvido_em }}</p>{% endif %}</div>
+<div class="tabela-wrapper"><table><thead><tr><th>Livro</th><th>Quantidade</th></tr></thead><tbody>{% for i in itens %}<tr><td>{{ i.livro_titulo }}</td><td>{{ i.quantidade }}</td></tr>{% endfor %}</tbody></table></div></section>
+<p><a href="{{ url_for('emprestimo.listar') }}">← Voltar ao histórico</a></p>
+{% endblock %}

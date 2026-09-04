@@ -1,0 +1,480 @@
+/* Tokens globais: centralizam a paleta para manter cores consistentes. */
+:root {
+    --verde: #176b4d;
+    --verde-escuro: #0e4d37;
+    --fundo: #f4f7f5;
+    --texto: #17231d;
+    --borda: #dce5df;
+    --branco: #fff;
+    --erro: #b42318
+}
+
+/* Reset mínimo: inclui bordas e padding no cálculo declarado de largura/altura. */
+* {
+    box-sizing: border-box
+}
+
+/* Base tipográfica e visual aplicada a todas as páginas que herdam base.html. */
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+    line-height: 1.5
+}
+
+/* Links reutilizam o verde da marca e mostram sublinhado apenas na interação. */
+a {
+    color: var(--verde);
+    font-weight: 650;
+    text-decoration: none
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+/* Cabeçalho flexível: separa marca e navegação e aceita quebra dos links. */
+.topo {
+    background: var(--verde-escuro);
+    color: #fff;
+    min-height: 68px;
+    padding: 0 max(4vw, 20px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px
+}
+
+/* Identidade textual do site; mantém contraste branco sobre o fundo escuro. */
+.marca {
+    color: #fff;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -.03em
+}
+
+.marca:hover {
+    text-decoration: none
+}
+
+/* A navegação usa flex para alinhar links e o formulário POST de logout. */
+.topo nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex-wrap: wrap
+}
+
+/* Unifica a cor de links e do botão que se comporta visualmente como link. */
+.topo nav a,
+.topo .link-button {
+    color: #fff
+}
+
+/* Remove margens padrão que desalinhariam formulários inseridos em barras flex. */
+.topo nav form,
+.acoes form,
+.acoes-finais form {
+    margin: 0
+}
+
+/* Área principal limitada a 1120px, fluida em telas menores e alta o bastante
+   para manter o rodapé afastado em páginas com pouco conteúdo. */
+.container {
+    width: min(1120px, 92%);
+    margin: 38px auto;
+    min-height: calc(100vh - 180px)
+}
+
+/* Rodapé discreto e centralizado. */
+footer {
+    text-align: center;
+    color: #68766e;
+    padding: 26px
+}
+
+/* Cabeçalho interno das páginas: título à esquerda e ação opcional à direita. */
+.cabecalho-pagina {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px
+}
+
+/* clamp torna o título responsivo entre limites legíveis. */
+.cabecalho-pagina h1 {
+    margin: 0;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    letter-spacing: -.04em
+}
+
+/* Textos auxiliares compartilham cor secundária e espaçamento compacto. */
+.cabecalho-pagina p,
+.auth-card>p {
+    color: #68766e;
+    margin: .35rem 0
+}
+
+/* Grade de três cards do painel em telas amplas. */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px
+}
+
+/* Superfícies elevadas compartilhadas: painel, autenticação e comprovante. */
+.card,
+.painel,
+.auth-card,
+.comprovante {
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 6px 24px rgba(20, 60, 40, .05)
+}
+
+/* Conteúdo de cada card é empilhado com espaçamento uniforme. */
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px
+}
+
+.card strong {
+    font-size: 2rem
+}
+
+/* Variante de destaque usa fundo da marca e força contraste do conteúdo. */
+.card.destaque {
+    background: var(--verde);
+    color: #fff
+}
+
+.card.destaque a {
+    color: #fff
+}
+
+/* Cartão de autenticação tem largura confortável e fica centralizado. */
+.auth-card {
+    width: min(440px, 100%);
+    margin: 8vh auto
+}
+
+.auth-card h1 {
+    margin-top: 0;
+    font-size: 2rem
+}
+
+/* Formulários em grid criam ritmo vertical regular entre campos. */
+.formulario {
+    display: grid;
+    gap: 18px
+}
+
+/* Labels viram grids para legenda e controle, com peso que reforça hierarquia. */
+.formulario label,
+.adicionar-item label {
+    font-weight: 650;
+    display: grid;
+    gap: 7px
+}
+
+/* Campos compartilham tamanho, borda, tipografia herdada e alvo de toque amplo. */
+input,
+select {
+    width: 100%;
+    border: 1px solid #bdcac2;
+    border-radius: 9px;
+    padding: 11px 12px;
+    background: #fff;
+    font: inherit;
+    color: inherit
+}
+
+/* Foco visível é requisito de navegação por teclado e acessibilidade. */
+input:focus,
+select:focus {
+    outline: 3px solid rgba(23, 107, 77, .16);
+    border-color: var(--verde)
+}
+
+/* Botão-base serve também a links com aparência de ação. */
+.botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--borda);
+    border-radius: 9px;
+    padding: 10px 16px;
+    background: #fff;
+    color: var(--texto);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer
+}
+
+.botao:hover {
+    text-decoration: none;
+    filter: brightness(.97)
+}
+
+/* Variações primária/secundária comunicam hierarquia sem mudar dimensões. */
+.botao.primario {
+    background: var(--verde);
+    border-color: var(--verde);
+    color: #fff
+}
+
+.botao.secundario {
+    background: #fff
+}
+
+/* Estado desabilitado reduz destaque e indica que clicar não terá efeito. */
+.botao:disabled {
+    opacity: .45;
+    cursor: not-allowed
+}
+
+/* Botões de formulário que precisam parecer links, como sair/remover. */
+.link-button {
+    border: 0;
+    background: none;
+    padding: 0;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer
+}
+
+/* Cor semântica usada em ações destrutivas. */
+.perigo {
+    color: var(--erro)
+}
+
+/* Mensagens flash: sucesso é padrão verde; erro sobrescreve fundo/borda/texto. */
+.alerta {
+    padding: 12px 16px;
+    border-radius: 9px;
+    margin-bottom: 18px;
+    background: #e8f5ee;
+    border: 1px solid #a9d9bf
+}
+
+.alerta.erro {
+    background: #fff0ee;
+    border-color: #f3b6ae;
+    color: #8f1c13
+}
+
+/* Barra horizontal de busca e exportação, flexível conforme a largura. */
+.barra-acoes {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 18px
+}
+
+/* O input de busca cresce, mas recebe limite para não dominar a barra. */
+.busca {
+    display: flex;
+    gap: 8px;
+    flex: 1
+}
+
+.busca input {
+    max-width: 440px
+}
+
+/* Wrapper fornece rolagem horizontal em telas estreitas sem quebrar a página. */
+.tabela-wrapper {
+    overflow: auto;
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 12px
+}
+
+/* Largura mínima mantém colunas utilizáveis; collapse une bordas adjacentes. */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 680px
+}
+
+/* Células alinhadas à esquerda com separadores horizontais. */
+th,
+td {
+    text-align: left;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--borda)
+}
+
+/* Cabeçalho tabular em caixa alta cria distinção visual dos dados. */
+th {
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #65736b;
+    background: #fafcfb
+}
+
+/* Evita linha divisória sobrando após a última linha do corpo. */
+tbody tr:last-child td {
+    border-bottom: 0
+}
+
+/* Ações de cada produto ficam lado a lado. */
+.acoes {
+    display: flex;
+    gap: 14px
+}
+
+/* Estado vazio ocupa a tabela com mensagem central e respiro. */
+.vazio {
+    text-align: center;
+    color: #68766e;
+    padding: 38px
+}
+
+/* Formulário de produto usa duas colunas; suas ações atravessam toda a grade. */
+.grade-form {
+    grid-template-columns: repeat(2, 1fr)
+}
+
+.form-acoes {
+    grid-column: 1/-1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px
+}
+
+/* Formulário compacto do carrinho: produto flexível, quantidade fixa e botão. */
+.adicionar-item {
+    display: grid;
+    grid-template-columns: 1fr 130px auto;
+    align-items: end;
+    gap: 14px
+}
+
+/* Resumo da compra alinha total e ações ao lado direito. */
+.resumo {
+    margin-top: 20px;
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    justify-content: flex-end
+}
+
+.resumo>strong {
+    font-size: 1.7rem
+}
+
+.acoes-finais {
+    display: flex;
+    gap: 10px
+}
+
+/* Comprovante restringe largura para leitura e impressão agradáveis. */
+.comprovante {
+    max-width: 850px;
+    margin: auto
+}
+
+/* Cabeçalho e total do comprovante reforçam hierarquia do documento. */
+.comprovante-topo {
+    text-align: center;
+    margin-bottom: 22px
+}
+
+.total-comprovante {
+    text-align: right;
+    font-size: 1.5rem;
+    font-weight: 800;
+    padding-top: 20px
+}
+
+/* Texto de ajuda do primeiro acesso é intencionalmente secundário. */
+.ajuda {
+    font-size: .9rem
+}
+
+/* Responsividade: abaixo de 760px, grades e barras viram fluxos verticais para
+   evitar campos comprimidos e manter botões com bons alvos de toque. */
+@media(max-width:760px) {
+    .topo {
+        align-items: flex-start;
+        flex-direction: column;
+        padding-top: 16px;
+        padding-bottom: 16px
+    }
+
+    .topo nav {
+        gap: 12px 18px
+    }
+
+    .cards {
+        grid-template-columns: 1fr
+    }
+
+    .cabecalho-pagina,
+    .barra-acoes {
+        align-items: stretch;
+        flex-direction: column
+    }
+
+    .grade-form {
+        grid-template-columns: 1fr
+    }
+
+    .adicionar-item {
+        grid-template-columns: 1fr
+    }
+
+    .resumo {
+        align-items: flex-end;
+        flex-direction: column
+    }
+
+    .acoes-finais {
+        width: 100%;
+        flex-direction: column
+    }
+
+    .acoes-finais .botao {
+        width: 100%
+    }
+}
+
+/* Impressão: remove navegação, rodapé, alertas e ações; elimina decoração e usa
+   toda a largura para que apenas o comprovante seja impresso com clareza. */
+@media print {
+    body {
+        background: #fff
+    }
+
+    .topo,
+    footer,
+    .nao-imprimir,
+    .alerta {
+        display: none
+    }
+
+    .container {
+        width: 100%;
+        margin: 0
+    }
+
+    .comprovante {
+        box-shadow: none;
+        border: 0
+    }
+
+    .tabela-wrapper {
+        border: 0
+    }
+}

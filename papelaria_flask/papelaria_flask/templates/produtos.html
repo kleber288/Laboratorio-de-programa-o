@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block titulo %}Produtos · Papelaria Criativa{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><h1>Produtos</h1><p>Cadastre, pesquise e controle o estoque.</p></div><a class="botao primario" href="{{ url_for('produto.novo') }}">+ Novo produto</a></div>
+<div class="barra-acoes">
+    <form method="get" class="busca"><input name="busca" value="{{ busca }}" placeholder="Nome, marca ou categoria" aria-label="Pesquisar"><button class="botao">Pesquisar</button></form>
+    <a class="botao secundario" href="{{ url_for('produto.exportar') }}">Exportar Excel</a>
+</div>
+<div class="tabela-wrapper"><table><thead><tr><th>Produto</th><th>Marca</th><th>Categoria</th><th>Preço</th><th>Estoque</th><th>Ações</th></tr></thead><tbody>
+{% for p in produtos %}<tr><td><strong>{{ p.nome }}</strong></td><td>{{ p.marca }}</td><td>{{ p.categoria }}</td><td>{{ p.preco_centavos|moeda }}</td><td>{{ p.estoque }}</td><td class="acoes"><a href="{{ url_for('produto.editar', produto_id=p.id) }}">Editar</a><form method="post" action="{{ url_for('produto.excluir', produto_id=p.id) }}" onsubmit="return confirm('Excluir este produto?')"><button class="perigo link-button">Excluir</button></form></td></tr>
+{% else %}<tr><td colspan="6" class="vazio">Nenhum produto encontrado.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

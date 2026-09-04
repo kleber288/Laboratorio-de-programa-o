@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Biblioteca Viva{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topo">
+        <a class="marca" href="{{ url_for('main.inicio') if session.get('usuario_id') else url_for('auth.login') }}">Biblioteca Viva</a>
+        {% if session.get('usuario_id') %}
+        <nav aria-label="Navegação principal">
+            <a href="{{ url_for('main.inicio') }}">Início</a>
+            <a href="{{ url_for('livro.listar') }}">Livros</a>
+            <a href="{{ url_for('emprestimo.novo') }}">Novo empréstimo</a>
+            <a href="{{ url_for('emprestimo.listar') }}">Histórico</a>
+            <form method="post" action="{{ url_for('auth.logout') }}"><button class="link-button" type="submit">Sair</button></form>
+        </nav>
+        {% endif %}
+    </header>
+    <main class="container">
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
+            {% for categoria, mensagem in mensagens %}<div class="alerta {{ categoria }}" role="alert">{{ mensagem }}</div>{% endfor %}
+        {% endwith %}
+        {% block conteudo %}{% endblock %}
+    </main>
+    <footer>Projeto didático · Flask, Jinja2, SQLite e MVC</footer>
+</body>
+</html>

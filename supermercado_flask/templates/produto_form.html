@@ -1,0 +1,24 @@
+{#
+    Formulário compartilhado por criação e edição. Condicionais mudam apenas o
+    título e os valores: em edição usam ``produto``; após POST inválido preservam
+    request.form. Cada ``name`` coincide com as chaves lidas em
+    _dados_formulario. ``required``, ``min`` e inputmode melhoram uso e
+    acessibilidade, mas o Controller ainda valida os dados.
+
+    ``set atual`` cria variável Jinja local; o ``for`` gera opções de unidade e
+    marca selected na atual. ``'%.2f'|format`` mostra centavos como decimal. O
+    POST sem action volta à rota atual, que decide INSERT ou UPDATE.
+#}
+{% extends "base.html" %}
+{% block titulo %}{{ 'Editar' if produto else 'Novo' }} produto{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><h1>{{ 'Editar' if produto else 'Novo' }} produto</h1><p>Os campos com * são obrigatórios.</p></div></div>
+<form method="post" class="painel formulario grade-form">
+  <label>Nome *<input name="nome" required value="{{ produto.nome if produto else request.form.get('nome', '') }}"></label>
+  <label>Fabricante *<input name="fabricante" required value="{{ produto.fabricante if produto else request.form.get('fabricante', '') }}"></label>
+  <label>Unidade *<select name="unidade" required>{% set atual = produto.unidade if produto else request.form.get('unidade', '') %}{% for u in ['unidade', 'kg', 'g', 'litro', 'ml', 'caixa', 'pacote'] %}<option value="{{ u }}" {{ 'selected' if atual == u }}>{{ u }}</option>{% endfor %}</select></label>
+  <label>Preço (R$) *<input name="preco" inputmode="decimal" required placeholder="12,90" value="{{ ('%.2f'|format(produto.preco_centavos / 100)) if produto else request.form.get('preco', '') }}"></label>
+  <label>Estoque *<input type="number" name="estoque" min="0" required value="{{ produto.estoque if produto else request.form.get('estoque', 0) }}"></label>
+  <div class="form-acoes"><a class="botao secundario" href="{{ url_for('produto.listar') }}">Cancelar</a><button class="botao primario">Salvar produto</button></div>
+</form>
+{% endblock %}

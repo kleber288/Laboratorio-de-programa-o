@@ -1,0 +1,65 @@
+{#
+    Formulário da rota ``auth.cadastro``. Os blocks são encaixados em base.html.
+    O POST sem action retorna à mesma URL. ``name`` liga nome/usuario/senha às
+    chamadas request.form do Controller; required/minlength oferecem feedback
+    imediato, mas a validação de servidor impede que clientes burlem as regras.
+#}
+{% extends "base.html" %}
+
+{% block titulo %}
+    Criar conta
+{% endblock %}
+
+{% block conteudo %}
+    <section class="auth-card">
+        <h1>Criar conta</h1>
+
+        {# Labels envolventes associam cada legenda ao controle para acessibilidade. #}
+        <form method="post" class="formulario">
+            <label>
+                Nome completo
+
+                <input
+                    name="nome"
+                    required
+                    minlength="2"
+                >
+            </label>
+
+            <label>
+                Usuário
+
+                <input
+                    name="usuario"
+                    required
+                    minlength="3"
+                    autocomplete="username"
+                >
+            </label>
+
+            <label>
+                Senha
+
+                <input
+                    type="password"
+                    name="senha"
+                    required
+                    minlength="6"
+                    {# autocomplete=new-password sinaliza que a credencial está sendo criada. #}
+                    autocomplete="new-password"
+                >
+            </label>
+
+            <button class="botao primario" type="submit">
+                Cadastrar
+            </button>
+        </form>
+
+        <p>
+            {# url_for usa o nome estável do endpoint do Blueprint auth. #}
+            <a href="{{ url_for('auth.login') }}">
+                Voltar ao login
+            </a>
+        </p>
+    </section>
+{% endblock %}

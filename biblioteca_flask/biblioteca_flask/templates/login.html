@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block titulo %}Entrar · Biblioteca Viva{% endblock %}
+{% block conteudo %}
+<section class="auth-card"><h1>Bem-vindo</h1><p>Entre para gerenciar o acervo e os empréstimos.</p>
+<form method="post" class="formulario"><label>Usuário<input name="usuario" required autofocus autocomplete="username"></label><label>Senha<input type="password" name="senha" required autocomplete="current-password"></label><button class="botao primario">Entrar</button></form>
+<p class="ajuda">Primeiro acesso: <strong>admin</strong> / <strong>admin123</strong></p><p><a href="{{ url_for('auth.cadastro') }}">Criar uma conta</a></p></section>
+{% endblock %}

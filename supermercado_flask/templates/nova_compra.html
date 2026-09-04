@@ -1,0 +1,29 @@
+{#
+    View do carrinho. Produtos, carrinho e total chegam do Controller. O ``for``
+    do select inclui somente produtos com estoque; o ``if`` é filtro do próprio
+    laço. Os ``name`` produto_id/quantidade correspondem a request.form. ``min`` e
+    ``required`` ajudam o usuário, enquanto o servidor revalida tudo.
+
+    Os formulários de adicionar, remover, limpar e finalizar usam POST porque
+    alteram sessão ou banco. ``loop.index0`` fornece o índice zero-based esperado
+    pela URL de remoção. O subtotal usa expressão aritmética antes de ``|moeda``;
+    o ``else`` do for cobre carrinho vazio. O atributo disabled é emitido pela
+    expressão somente quando não há itens, evitando ações sem efeito.
+#}
+{% extends "base.html" %}
+{% block titulo %}Nova compra{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><h1>Nova compra</h1><p>Monte o carrinho e finalize o atendimento.</p></div></div>
+<section class="painel">
+  <form method="post" action="{{ url_for('compra.adicionar') }}" class="adicionar-item">
+    <label>Produto<select name="produto_id" required><option value="">Selecione...</option>{% for p in produtos if p.estoque > 0 %}<option value="{{ p.id }}">{{ p.nome }} · {{ p.preco_centavos|moeda }} · {{ p.estoque }} em estoque</option>{% endfor %}</select></label>
+    <label>Quantidade<input type="number" name="quantidade" min="1" value="1" required></label>
+    <button class="botao primario">Adicionar</button>
+  </form>
+</section>
+<div class="tabela-wrapper"><table><thead><tr><th>Produto</th><th>Preço</th><th>Quantidade</th><th>Subtotal</th><th></th></tr></thead><tbody>
+{% for item in carrinho %}<tr><td>{{ item.nome }}</td><td>{{ item.preco_centavos|moeda }}</td><td>{{ item.quantidade }}</td><td>{{ (item.preco_centavos * item.quantidade)|moeda }}</td><td><form method="post" action="{{ url_for('compra.remover', indice=loop.index0) }}"><button class="perigo link-button">Remover</button></form></td></tr>
+{% else %}<tr><td colspan="5" class="vazio">O carrinho está vazio.</td></tr>{% endfor %}
+</tbody></table></div>
+<div class="resumo"><span>Total</span><strong>{{ total|moeda }}</strong><div class="acoes-finais"><form method="post" action="{{ url_for('compra.limpar') }}"><button class="botao secundario" {{ 'disabled' if not carrinho }}>Limpar</button></form><form method="post" action="{{ url_for('compra.finalizar') }}"><button class="botao primario" {{ 'disabled' if not carrinho }}>Finalizar compra</button></form></div></div>
+{% endblock %}
